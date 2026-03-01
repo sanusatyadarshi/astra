@@ -15,8 +15,10 @@ git clone git@github.com:sanusatyadarshi/astra.git
 cd astra
 ./install.sh
 ```
+<br>
 
-On first install, copy and fill in your settings:
+**[Optional]** On first install, copy and fill in your settings:
+Note: This is only required if you are using a custom API endpoint and API based usage. Users having Claude Pro/Max Subscription do not need to configure this manually.
 
 ```bash
 cp global/settings.json.example ~/.claude/settings.json
