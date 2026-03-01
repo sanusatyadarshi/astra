@@ -1,6 +1,6 @@
-# Getting Started with astra
+# Getting Started with Astra
 
-A complete walkthrough of using astra to architect, build, debug, and deploy Go microservices from the Claude Code terminal.
+A complete walkthrough of using Astra to architect, build, debug, and deploy Go microservices from the Claude Code terminal.
 
 ---
 
@@ -40,26 +40,26 @@ You should see skills listed when Claude starts. Try asking Claude to list its a
 
 ## 2. Mental Model: How This Works
 
-astra adds three layers on top of vanilla Claude Code:
+Astra adds three layers on top of vanilla Claude Code:
 
 ### Skills — automatic behaviors
 
 Skills are instructions Claude loads based on what you're doing. You don't invoke most of them — Claude reads each skill's trigger description and activates the right one automatically.
 
-**Example:** You say "tests are failing intermittently." Claude sees this matches the `systematic-debugging` skill's trigger ("any bug, test failure, or unexpected behavior") and follows its methodology: trace the error, reproduce it, form a hypothesis, fix at source, verify.
+**Example:** You say "tests are failing intermittently." Claude sees this matches the [`systematic-debugging`](skills/systematic-debugging/SKILL.md) skill's trigger ("any bug, test failure, or unexpected behavior") and follows its methodology: trace the error, reproduce it, form a hypothesis, fix at source, verify.
 
 - 15 skills covering planning, development, debugging, review, and deployment
 - One skill (`/security-architect`) is user-invocable as a slash command
 - Skills live in `skills/<name>/SKILL.md`
-- Multiple skills can be active simultaneously (e.g., `test-driven-development` + `verification-before-completion`)
+- Multiple skills can be active simultaneously (e.g., [`test-driven-development`](skills/test-driven-development/SKILL.md) + [`verification-before-completion`](skills/verification-before-completion/SKILL.md))
 
 ### Agents — specialized subagents
 
 Agents are focused subprocesses Claude dispatches for specific tasks. You can ask for a specific agent, or Claude picks one based on context.
 
-**Example:** You say "design the API contracts for this service." Claude dispatches the `api-designer` agent — it runs as an isolated subagent with its own context window, focused entirely on API design.
+**Example:** You say "design the API contracts for this service." Claude dispatches the [`api-designer`](agents/01-core-development/api-designer.md) agent — it runs as an isolated subagent with its own context window, focused entirely on API design.
 
-- 130 agents across 10 categories (from `golang-pro` to `kubernetes-specialist`)
+- 130 agents across 10 categories (from [`golang-pro`](agents/02-language-specialists/golang-pro.md) to [`kubernetes-specialist`](agents/03-infrastructure/kubernetes-specialist.md))
 - Each agent has a defined role, toolset, and model (opus/sonnet/haiku)
 - Agents run isolated — they don't pollute your main conversation context
 - Claude can dispatch multiple agents in parallel for independent tasks
@@ -76,7 +76,7 @@ The global `CLAUDE.md` file (`~/.claude/CLAUDE.md`) defines workflow rules that 
 
 ## 3. The Journey: Building a Go Microservice
 
-Let's walk through building an order-processing microservice for an e-commerce platform. Each phase shows what you'd say to Claude, which skills and agents activate, and what Claude does differently because of astra.
+Let's walk through building an order-processing microservice for an e-commerce platform. Each phase shows what you'd say to Claude, which skills and agents activate, and what Claude does differently because of Astra.
 
 ### Phase 1: Architect
 
@@ -89,7 +89,7 @@ reservation, and fulfillment tracking. We use Go, gRPC between services,
 PostgreSQL, and deploy to Kubernetes.
 ```
 
-**What activates:** The `brainstorming` skill triggers because you're describing new functionality. Instead of jumping straight to code, Claude:
+**What activates:** The [`brainstorming`](skills/brainstorming/SKILL.md) skill triggers because you're describing new functionality. Instead of jumping straight to code, Claude:
 
 1. Explores your requirements — asks clarifying questions one at a time (event-driven vs synchronous? saga pattern for payments? idempotency requirements?)
 2. Proposes 2-3 architectural approaches with trade-offs
@@ -101,7 +101,7 @@ For deeper system design work, Claude dispatches specialized agents:
 You: Design the service boundaries and communication patterns.
 ```
 
-Claude dispatches the `microservices-architect` agent (runs on opus for deep reasoning). It returns with:
+Claude dispatches the [`microservices-architect`](agents/01-core-development/microservices-architect.md) agent (runs on opus for deep reasoning). It returns with:
 - Service boundary recommendations
 - Communication patterns (sync gRPC for queries, async events for state changes)
 - Data ownership boundaries
@@ -111,7 +111,7 @@ Claude dispatches the `microservices-architect` agent (runs on opus for deep rea
 You: Now design the API contracts for the order service.
 ```
 
-Claude dispatches the `api-designer` agent, which produces:
+Claude dispatches the [`api-designer`](agents/01-core-development/api-designer.md) agent, which produces:
 - gRPC service definitions with protobuf schemas
 - REST gateway mappings (if needed)
 - Error codes and pagination patterns
@@ -125,7 +125,7 @@ Once the architecture is settled:
 You: Write an implementation plan for the order service.
 ```
 
-**What activates:** The `writing-plans` skill takes over. Claude writes a structured plan to `tasks/todo.md` with:
+**What activates:** The [`writing-plans`](skills/writing-plans/SKILL.md) skill takes over. Claude writes a structured plan to `tasks/todo.md` with:
 
 - Bite-sized tasks (2-5 minutes each)
 - Each task follows red-green-refactor: write failing test, verify it fails, implement, verify it passes, commit
@@ -161,15 +161,15 @@ You: Write an implementation plan for the order service.
 You: /security-architect
 ```
 
-This is the one user-invocable slash command. The `security-architect` skill activates and Claude:
+This is the one user-invocable slash command. The [`security-architect`](skills/security-architect/SKILL.md) skill activates and Claude:
 - Maps the attack surface (gRPC endpoints, database access, inter-service communication)
 - Traces trust boundaries
 - Audits authentication, authorization, data security, API security
 - Produces findings organized by severity with remediation recommendations
 
 After the plan is written, Claude offers execution options:
-- **Subagent-driven**: Fresh agent per task (via `subagent-driven-development`)
-- **Parallel session**: Execute in a separate session with review checkpoints (via `executing-plans`)
+- **Subagent-driven**: Fresh agent per task (via [`subagent-driven-development`](skills/subagent-driven-development/SKILL.md))
+- **Parallel session**: Execute in a separate session with review checkpoints (via [`executing-plans`](skills/executing-plans/SKILL.md))
 
 ### Phase 3: Develop
 
@@ -177,7 +177,7 @@ After the plan is written, Claude offers execution options:
 You: Implement the order handler with TDD.
 ```
 
-**What activates:** The `test-driven-development` skill enforces the RED-GREEN-REFACTOR cycle. Claude won't write implementation code before tests.
+**What activates:** The [`test-driven-development`](skills/test-driven-development/SKILL.md) skill enforces the RED-GREEN-REFACTOR cycle. Claude won't write implementation code before tests.
 
 **RED** — Claude writes the test first:
 
@@ -270,14 +270,14 @@ ok      github.com/yourorg/order-service/internal/order    0.003s
 
 **REFACTOR** — Only after green. Clean up duplication, improve names, extract helpers.
 
-For Go-specific patterns, Claude dispatches the `golang-pro` agent. This agent knows:
+For Go-specific patterns, Claude dispatches the [`golang-pro`](agents/02-language-specialists/golang-pro.md) agent. This agent knows:
 - Table-driven tests (as shown above)
 - Functional options pattern for configuration
 - Error wrapping with `fmt.Errorf("create order: %w", err)`
 - Interface-driven design for testability
 - Go module layout conventions
 
-**Worktree isolation:** The `using-git-worktrees` skill creates an isolated git worktree for this feature, so your main branch stays clean while you develop.
+**Worktree isolation:** The [`using-git-worktrees`](skills/using-git-worktrees/SKILL.md) skill creates an isolated git worktree for this feature, so your main branch stays clean while you develop.
 
 ### Phase 4: Debug
 
@@ -287,7 +287,7 @@ locally but fails about 30% of the time in CI with "context deadline
 exceeded".
 ```
 
-**What activates:** The `systematic-debugging` skill. Claude follows a structured methodology instead of guessing:
+**What activates:** The [`systematic-debugging`](skills/systematic-debugging/SKILL.md) skill. Claude follows a structured methodology instead of guessing:
 
 **Phase 1 — Gather evidence:**
 - Read the full error output carefully
@@ -300,7 +300,7 @@ exceeded".
 - Form a single hypothesis: "CI has lower resources, so the database connection pool exhausts under parallel test runs"
 - Test minimally: check if running tests with `-count=1 -parallel=1` eliminates the failure
 
-**Parallel investigation:** The `dispatching-parallel-agents` skill triggers if there are multiple test files failing. Claude dispatches separate agents to investigate each file concurrently:
+**Parallel investigation:** The [`dispatching-parallel-agents`](skills/dispatching-parallel-agents/SKILL.md) skill triggers if there are multiple test files failing. Claude dispatches separate agents to investigate each file concurrently:
 
 ```
 You: Three test files are failing intermittently: handler_test.go,
@@ -314,7 +314,7 @@ Claude dispatches 3 agents in parallel — one per file — each investigating i
 - Implement the fix (e.g., add proper test cleanup, use `t.Cleanup()` for database connections)
 - Verify the fix
 
-**Phase 4 — Prove it:** The `verification-before-completion` skill requires Claude to run verification fresh and show evidence before claiming the fix works:
+**Phase 4 — Prove it:** The [`verification-before-completion`](skills/verification-before-completion/SKILL.md) skill requires Claude to run verification fresh and show evidence before claiming the fix works:
 
 ```
 $ go test -race -count=10 ./internal/order/...
@@ -329,10 +329,10 @@ No "should be fixed" or "probably works" — evidence or nothing.
 You: Review the order service before merging.
 ```
 
-**What activates:** The `requesting-code-review` skill. Claude:
+**What activates:** The [`requesting-code-review`](skills/requesting-code-review/SKILL.md) skill. Claude:
 
 1. Gets the base and head SHAs for the diff
-2. Dispatches a `code-reviewer` subagent with full context: what was implemented, requirements, the diff
+2. Dispatches a [`code-reviewer`](agents/04-quality-security/code-reviewer.md) subagent with full context: what was implemented, requirements, the diff
 3. The reviewer evaluates: correctness, Go idioms, security, performance, test coverage
 
 **Example review output:**
@@ -357,7 +357,7 @@ You: Review the order service before merging.
 - Error wrapping follows Go conventions
 ```
 
-**Handling feedback:** The `receiving-code-review` skill ensures Claude doesn't blindly agree with every suggestion. For each review item, Claude:
+**Handling feedback:** The [`receiving-code-review`](skills/receiving-code-review/SKILL.md) skill ensures Claude doesn't blindly agree with every suggestion. For each review item, Claude:
 - Reads the feedback and restates the requirement
 - Verifies against the actual codebase
 - Evaluates technical soundness
@@ -373,13 +373,13 @@ You: Prepare this for production deployment.
 
 Claude dispatches multiple specialized agents:
 
-**`kubernetes-specialist`** — Produces K8s manifests:
+**[`kubernetes-specialist`](agents/03-infrastructure/kubernetes-specialist.md)** — Produces K8s manifests:
 - Deployment with resource limits, health checks, rolling update strategy
 - Service and Ingress configuration
 - ConfigMap and Secret references
 - HorizontalPodAutoscaler
 
-**`docker-expert`** — Produces a multi-stage Dockerfile:
+**[`docker-expert`](agents/03-infrastructure/docker-expert.md)** — Produces a multi-stage Dockerfile:
 ```dockerfile
 FROM golang:1.22-alpine AS builder
 WORKDIR /app
@@ -395,18 +395,18 @@ EXPOSE 8080
 ENTRYPOINT ["/order-service"]
 ```
 
-**`devops-engineer`** — CI/CD pipeline configuration (GitHub Actions / GitLab CI):
+**[`devops-engineer`](agents/03-infrastructure/devops-engineer.md)** — CI/CD pipeline configuration (GitHub Actions / GitLab CI):
 - Build, test, lint stages
 - Container image build and push
 - Deployment to staging then production
 
-**`security-engineer`** — Production hardening:
+**[`security-engineer`](agents/03-infrastructure/security-engineer.md)** — Production hardening:
 - Network policies
 - Pod security standards
 - Secret management review
 - TLS configuration
 
-**Branch integration:** The `finishing-a-development-branch` skill presents four options:
+**Branch integration:** The [`finishing-a-development-branch`](skills/finishing-a-development-branch/SKILL.md) skill presents four options:
 1. **Merge locally** — pull, merge, verify tests, cleanup branch
 2. **Push & create PR** — push, `gh pr create`, keep branch
 3. **Keep as-is** — leave the branch for later
@@ -420,21 +420,21 @@ Quick reference of the most relevant agents and when to use each:
 
 | Agent | Category | When to Use |
 |-------|----------|-------------|
-| `golang-pro` | Language Specialists | Everyday Go development — idioms, patterns, stdlib usage |
-| `microservices-architect` | Core Development | System design, service boundaries, communication patterns |
-| `api-designer` | Core Development | REST/gRPC contract design, protobuf schemas, versioning |
-| `kubernetes-specialist` | Infrastructure | K8s manifests, operators, cluster configuration |
-| `docker-expert` | Infrastructure | Containerization, multi-stage builds, optimization |
-| `devops-engineer` | Infrastructure | CI/CD pipelines, deployment automation |
-| `terraform-engineer` | Infrastructure | Infrastructure as code, cloud resource management |
-| `security-engineer` | Infrastructure | Production hardening, network policies, TLS |
-| `security-auditor` | Quality & Security | Security review, vulnerability scanning |
-| `code-reviewer` | Quality & Security | Code review — correctness, idioms, coverage |
-| `architect-reviewer` | Quality & Security | Architecture review — design decisions, trade-offs |
-| `performance-engineer` | Quality & Security | Profiling, optimization, benchmarking |
-| `database-administrator` | Infrastructure | Schema design, query optimization, migrations |
-| `sql-pro` | Language Specialists | SQL queries, indexing strategy, database patterns |
-| `sre-engineer` | Infrastructure | Reliability, SLOs, incident response, observability |
+| [`golang-pro`](agents/02-language-specialists/golang-pro.md) | Language Specialists | Everyday Go development — idioms, patterns, stdlib usage |
+| [`microservices-architect`](agents/01-core-development/microservices-architect.md) | Core Development | System design, service boundaries, communication patterns |
+| [`api-designer`](agents/01-core-development/api-designer.md) | Core Development | REST/gRPC contract design, protobuf schemas, versioning |
+| [`kubernetes-specialist`](agents/03-infrastructure/kubernetes-specialist.md) | Infrastructure | K8s manifests, operators, cluster configuration |
+| [`docker-expert`](agents/03-infrastructure/docker-expert.md) | Infrastructure | Containerization, multi-stage builds, optimization |
+| [`devops-engineer`](agents/03-infrastructure/devops-engineer.md) | Infrastructure | CI/CD pipelines, deployment automation |
+| [`terraform-engineer`](agents/03-infrastructure/terraform-engineer.md) | Infrastructure | Infrastructure as code, cloud resource management |
+| [`security-engineer`](agents/03-infrastructure/security-engineer.md) | Infrastructure | Production hardening, network policies, TLS |
+| [`security-auditor`](agents/04-quality-security/security-auditor.md) | Quality & Security | Security review, vulnerability scanning |
+| [`code-reviewer`](agents/04-quality-security/code-reviewer.md) | Quality & Security | Code review — correctness, idioms, coverage |
+| [`architect-reviewer`](agents/04-quality-security/architect-reviewer.md) | Quality & Security | Architecture review — design decisions, trade-offs |
+| [`performance-engineer`](agents/04-quality-security/performance-engineer.md) | Quality & Security | Profiling, optimization, benchmarking |
+| [`database-administrator`](agents/03-infrastructure/database-administrator.md) | Infrastructure | Schema design, query optimization, migrations |
+| [`sql-pro`](agents/02-language-specialists/sql-pro.md) | Language Specialists | SQL queries, indexing strategy, database patterns |
+| [`sre-engineer`](agents/03-infrastructure/sre-engineer.md) | Infrastructure | Reliability, SLOs, incident response, observability |
 
 **Model routing:** Agents run on different models based on task complexity:
 - **opus** — Architecture decisions, complex reasoning, threat modeling
