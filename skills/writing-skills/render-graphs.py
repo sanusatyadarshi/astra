@@ -13,6 +13,7 @@ Requires: graphviz (dot) installed on system
 """
 
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -77,8 +78,10 @@ def render_to_svg(dot_content: str) -> str | None:
         return None
     except FileNotFoundError:
         print("Error: graphviz (dot) not found. Install with:", file=sys.stderr)
-        print("  brew install graphviz    # macOS", file=sys.stderr)
-        print("  apt install graphviz     # Linux", file=sys.stderr)
+        print("  brew install graphviz          # macOS", file=sys.stderr)
+        print("  apt install graphviz           # Linux", file=sys.stderr)
+        print("  choco install graphviz         # Windows (Chocolatey)", file=sys.stderr)
+        print("  winget install Graphviz.Graphviz  # Windows (winget)", file=sys.stderr)
         return None
 
 
@@ -107,10 +110,12 @@ def main() -> None:
         sys.exit(1)
 
     # Check if dot is available
-    if subprocess.run(["which", "dot"], capture_output=True).returncode != 0:
+    if shutil.which("dot") is None:
         print("Error: graphviz (dot) not found. Install with:", file=sys.stderr)
-        print("  brew install graphviz    # macOS", file=sys.stderr)
-        print("  apt install graphviz     # Linux", file=sys.stderr)
+        print("  brew install graphviz          # macOS", file=sys.stderr)
+        print("  apt install graphviz           # Linux", file=sys.stderr)
+        print("  choco install graphviz         # Windows (Chocolatey)", file=sys.stderr)
+        print("  winget install Graphviz.Graphviz  # Windows (winget)", file=sys.stderr)
         sys.exit(1)
 
     markdown = skill_file.read_text()
