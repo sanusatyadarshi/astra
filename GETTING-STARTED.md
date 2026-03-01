@@ -13,7 +13,7 @@ A complete walkthrough of using Astra to architect, build, debug, and deploy Go 
 - Go toolchain (1.21+)
 - git
 
-**Setup (3 commands):**
+**Setup — macOS / Linux (3 commands):**
 
 ```bash
 git clone git@github.com:sanusatyadarshi/astra.git
@@ -21,11 +21,26 @@ cd astra
 ./install.sh
 ```
 
+**Setup — Windows (PowerShell):**
+
+```powershell
+git clone git@github.com:sanusatyadarshi/astra.git
+cd astra
+.\install.ps1
+```
+
 On first install, copy and configure your settings:
 
+**macOS / Linux:**
 ```bash
 cp global/settings.json.example ~/.claude/settings.json
 # Edit ~/.claude/settings.json with your API token and endpoint
+```
+
+**Windows:**
+```powershell
+Copy-Item global\settings.json.example ~\.claude\settings.json
+# Edit ~\.claude\settings.json with your API token and endpoint
 ```
 
 **Verify it works:**
@@ -38,7 +53,9 @@ You should see skills listed when Claude starts. Try asking Claude to list its a
 
 Skills activate automatically in every `claude` session — no extra configuration needed beyond the initial install.
 
-**How symlinks work:** `install.sh` symlinks everything from `astra/` into `~/.claude/`. This means any edit you make to files in `astra/skills/` or `astra/agents/` is live immediately — no reinstall needed.
+**How symlinks work:** The installer symlinks everything from `astra/` into `~/.claude/`. This means any edit you make to files in `astra/skills/` or `astra/agents/` is live immediately — no reinstall needed.
+
+> **Windows note:** If your system doesn't support symlinks (no Developer Mode / not admin), the installer copies files instead. In copy mode, re-run `.\install.ps1` after editing skills or agents to push your changes.
 
 ---
 

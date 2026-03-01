@@ -10,6 +10,8 @@ So I pulled together the best stuff I found into one setup. Skills that capture 
 
 ## Setup
 
+### macOS / Linux
+
 ```bash
 git clone git@github.com:sanusatyadarshi/astra.git
 cd astra
@@ -17,17 +19,34 @@ cd astra
 ```
 <br>
 
+### Windows (PowerShell)
+
+```powershell
+git clone git@github.com:sanusatyadarshi/astra.git
+cd astra
+.\install.ps1
+```
+
+> **Symlinks vs copies:** On Windows with Developer Mode enabled (or running as admin), the installer creates symlinks just like macOS/Linux — edits are live immediately. Without symlink support, it copies files instead and writes a manifest to `~/.claude/.astra-manifest.json`. In copy mode, re-run `.\install.ps1` after editing skills or agents to push changes.
+
 **[Optional]** On first install, copy and fill in your settings.
 <br>
-Note: This is only required if you are using a custom API endpoint and API based usage. 
+Note: This is only required if you are using a custom API endpoint and API based usage.
 Users having Claude Pro/Max Subscription do not need to configure this manually.
 
+**macOS / Linux:**
 ```bash
 cp global/settings.json.example ~/.claude/settings.json
 # Edit with your API token and endpoint
 ```
 
-All skills and agents are symlinked — edits are live immediately.
+**Windows:**
+```powershell
+Copy-Item global\settings.json.example ~\.claude\settings.json
+# Edit with your API token and endpoint
+```
+
+On macOS/Linux, all skills and agents are symlinked — edits are live immediately.
 
 ## What's Included
 
@@ -72,9 +91,17 @@ Browse agents: `ls agents/` or `ls agents/<category>/`
 
 Sync local `~/.claude/` changes back to the repo (secrets are automatically stripped):
 
+**macOS / Linux:**
 ```bash
 ./backup.sh
 git add -A && git commit -m "backup"
+git push
+```
+
+**Windows (PowerShell):**
+```powershell
+.\backup.ps1
+git add -A; git commit -m "backup"
 git push
 ```
 
@@ -115,7 +142,7 @@ Role description, expertise areas, guidelines...
 
 **Model routing:** `opus` for deep reasoning, `sonnet` for everyday coding, `haiku` for quick tasks, `inherit` to match conversation model.
 
-Run `./install.sh` after adding new content to create symlinks.
+Run `./install.sh` (or `.\install.ps1` on Windows) after adding new content to create symlinks.
 
 ## Structure
 
@@ -138,8 +165,11 @@ astra/
 │   └── ...
 ├── hooks/                       # Hook configurations
 ├── commands/                    # Custom commands
-├── install.sh                   # Symlink everything into ~/.claude/
-└── backup.sh                    # Sync changes back to repo
+├── install.sh                   # Installer for macOS/Linux (bash)
+├── install.ps1                  # Installer for Windows (PowerShell)
+├── backup.sh                    # Backup for macOS/Linux (bash)
+├── backup.ps1                   # Backup for Windows (PowerShell)
+└── .gitattributes               # Line ending rules for cross-platform
 ```
 
 ## Contributing
@@ -150,7 +180,7 @@ Found a bug? Have an idea for a new skill or agent? PRs welcome.
 - **Adding agents** — Create `agents/<category>/<name>.md` with YAML frontmatter (`name`, `description`, `tools`, `model`)
 - **Docs improvements** — Broken links, missing hyperlinks, clarity fixes
 
-Run `./install.sh` after adding new content to create symlinks. Test with `claude` before submitting.
+Run `./install.sh` (or `.\install.ps1` on Windows) after adding new content to create symlinks. Test with `claude` before submitting.
 
 ## Acknowledgements
 
