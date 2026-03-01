@@ -1,5 +1,7 @@
 # Astra (अस्त्र)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Originally built for personal Go microservice work, now open for anyone to fork and customize. 15 skills, 130 agents, zero setup friction.
 
 One clone. One script. Immediately productive.
