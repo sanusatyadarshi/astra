@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-I was working on Go microservices and got tired of re-explaining my preferences every session. Then I noticed the same problem everywhere: good workflows scattered across repos, useful techniques buried in random blog posts, patterns that took me months to figure out.
+I was struggling to integrate all the best practices for agentic coding. Then I noticed the same problem everywhere: good workflows scattered across repos, useful techniques buried in random blog posts, patterns that took me ages to figure out.
 
 So I pulled together the best stuff I found into one setup. Skills that capture how I actually want to work. Agents for basically every domain. Clone it, run the install script, done.
 
