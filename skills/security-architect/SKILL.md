@@ -1,6 +1,6 @@
 ---
 name: security-architect
-description: Comprehensive security architecture review. Identifies vulnerabilities, threat vectors, authentication gaps, data flow issues, and compliance concerns. Use for security audits, threat modeling, or reviewing code with security implications.
+description: Use when performing security audits, threat modeling, or reviewing code with security implications — identifies vulnerabilities, threat vectors, authentication gaps, data flow issues, and compliance concerns
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash
 model: inherit

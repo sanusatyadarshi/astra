@@ -21,18 +21,19 @@ echo "  Linked plugins/blocklist.json"
 for skill_dir in "${SCRIPT_DIR}/skills"/*/; do
     [ -d "$skill_dir" ] || continue
     skill_name="$(basename "${skill_dir}")"
-    mkdir -p "${CLAUDE_HOME}/skills/${skill_name}"
-    ln -sfn "${skill_dir}SKILL.md" "${CLAUDE_HOME}/skills/${skill_name}/SKILL.md"
+    # Remove old directory/symlink so ln -sfn can create a clean symlink
+    rm -rf "${CLAUDE_HOME}/skills/${skill_name}"
+    ln -sfn "${skill_dir}" "${CLAUDE_HOME}/skills/${skill_name}"
     echo "  Linked skill: ${skill_name}"
 done
 
-# Symlink all agents
-for agent_file in "${SCRIPT_DIR}/agents"/*.md; do
-    [ -f "$agent_file" ] || continue
-    mkdir -p "${CLAUDE_HOME}/agents"
+# Symlink all agents (recurse into category subdirs, link flat into ~/.claude/agents/)
+mkdir -p "${CLAUDE_HOME}/agents"
+find "${SCRIPT_DIR}/agents" -name "*.md" ! -name "README.md" | while read -r agent_file; do
     ln -sfn "${agent_file}" "${CLAUDE_HOME}/agents/$(basename "${agent_file}")"
-    echo "  Linked agent: $(basename "${agent_file}")"
 done
+agent_count=$(find "${SCRIPT_DIR}/agents" -name "*.md" ! -name "README.md" | wc -l | tr -d ' ')
+echo "  Linked ${agent_count} agents"
 
 # Handle settings.json
 if [ ! -f "${CLAUDE_HOME}/settings.json" ]; then
