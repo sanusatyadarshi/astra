@@ -4,6 +4,8 @@ Personal Claude Code configuration repo. 15 skills, 130 agents, zero setup frict
 
 One clone. One script. Immediately productive.
 
+**New here?** Read the [Getting Started Guide](GETTING-STARTED.md) — a complete walkthrough of using astra to architect, build, debug, and deploy Go microservices.
+
 ## Setup
 
 ```bash
@@ -38,7 +40,7 @@ All skills and agents are symlinked — edits are live immediately.
 | `systematic-debugging` | Methodical debugging before proposing fixes |
 | `test-driven-development` | TDD workflow — write tests before implementation |
 | `using-git-worktrees` | Isolated git worktrees for feature work |
-| `using-superpowers` | Establishes how to find and use skills at conversation start |
+| `using-astras` | Establishes how to find and use skills at conversation start |
 | `verification-before-completion` | Evidence-based verification before claiming work is done |
 | `writing-plans` | Multi-step task planning before touching code |
 | `writing-skills` | Create, edit, and verify skills before deployment |
@@ -135,3 +137,13 @@ astra/
 ├── install.sh                   # Symlink everything into ~/.claude/
 └── backup.sh                    # Sync changes back to repo
 ```
+
+## Acknowledgements
+
+This repo stands on the shoulders of two amazing open-source projects:
+
+- **[obra/superpowers](https://github.com/obra/superpowers)** by [Jesse Vincent](https://github.com/obra) — The original agentic skills framework and software development methodology that this repo is forked from. The skill architecture, workflow orchestration, and development philosophy all originate here. Jesse's work on making Claude Code genuinely productive is outstanding.
+
+- **[VoltAgent/awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents)** by [VoltAgent](https://github.com/VoltAgent) — The incredible collection of 100+ specialized Claude Code subagents that powers the agents in this repo. A massive effort to cover every development use case imaginable.
+
+Both projects are released under the **MIT license**, which made it possible to fork, customize, and combine them into a single unified setup tailored to my workflow. Huge thanks to the authors for their generosity in open-sourcing this work.
