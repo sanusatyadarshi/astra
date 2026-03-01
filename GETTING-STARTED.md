@@ -2,6 +2,8 @@
 
 A complete walkthrough of using Astra to architect, build, debug, and deploy Go microservices from the Claude Code terminal.
 
+> **Note:** This guide uses Go microservices as the running example because that's what Astra was originally built for. The skills and agents themselves are language-agnostic — they work equally well with Python, TypeScript, Rust, or any other stack.
+
 ---
 
 ## 1. Prerequisites & Install
@@ -33,6 +35,8 @@ claude
 ```
 
 You should see skills listed when Claude starts. Try asking Claude to list its available skills — it should report 15 skills and 130 agents.
+
+Skills activate automatically in every `claude` session — no extra configuration needed beyond the initial install.
 
 **How symlinks work:** `install.sh` symlinks everything from `astra/` into `~/.claude/`. This means any edit you make to files in `astra/skills/` or `astra/agents/` is live immediately — no reinstall needed.
 
@@ -454,7 +458,7 @@ and integration_test.go.
 Claude creates one agent per file, all running in parallel. Results are synthesized when all agents complete.
 
 ### Skills stack
-Multiple skills can be active at the same time. Writing implementation code might activate both `test-driven-development` (write tests first) and `verification-before-completion` (prove it works before claiming done).
+Multiple skills can be active at the same time. Writing implementation code might activate both [`test-driven-development`](skills/test-driven-development/SKILL.md) (write tests first) and [`verification-before-completion`](skills/verification-before-completion/SKILL.md) (prove it works before claiming done).
 
 ### Slash commands
 Only `/security-architect` is user-invocable as a slash command. All other skills activate automatically based on context. You don't need to memorize triggers — just describe what you need and the right skill activates.

@@ -1,6 +1,6 @@
 # Astra (अस्त्र)
 
-Personal Claude Code configuration repo. 15 skills, 130 agents, zero setup friction.
+Originally built for personal Go microservice work, now open for anyone to fork and customize. 15 skills, 130 agents, zero setup friction.
 
 One clone. One script. Immediately productive.
 
