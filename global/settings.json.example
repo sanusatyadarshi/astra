@@ -1,0 +1,7 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "<your-anthropic-auth-token>",
+    "ANTHROPIC_BASE_URL": "<your-api-endpoint>",
+    "ANTHROPIC_MODEL": "anthropic/claude-opus-4-6"
+  }
+}

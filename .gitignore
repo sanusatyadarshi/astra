@@ -1,0 +1,5 @@
+settings.json
+.mcp.json
+.DS_Store
+.envrc
+*.swp
