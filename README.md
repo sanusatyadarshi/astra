@@ -17,6 +17,7 @@ git clone git@github.com:sanusatyadarshi/astra.git
 cd astra
 ./install.sh
 ```
+<br>
 
 ### Windows (PowerShell)
 
@@ -28,7 +29,10 @@ cd astra
 
 > **Symlinks vs copies:** On Windows with Developer Mode enabled (or running as admin), the installer creates symlinks just like macOS/Linux — edits are live immediately. Without symlink support, it copies files instead and writes a manifest to `~/.claude/.astra-manifest.json`. In copy mode, re-run `.\install.ps1` after editing skills or agents to push changes.
 
-On first install, copy and fill in your settings:
+**[Optional]** On first install, copy and fill in your settings.
+<br>
+Note: This is only required if you are using a custom API endpoint and API based usage.
+Users having Claude Pro/Max Subscription do not need to configure this manually.
 
 **macOS / Linux:**
 ```bash
